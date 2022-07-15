@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 export default function Answer() {
 	const client = useQueryClient()
 	const session = useSession()
-	const router = useRouter()
+	console.log(session)
 
 	const [animate] = useAutoAnimate<any>()
 
@@ -93,7 +93,7 @@ export default function Answer() {
 						onClick={() => pinQuestion.mutate({ action: 'unpin' })}
 						className={`btn btn-sm btn-accent ${
 							pinQuestion.isLoading && 'pointer-events-none'
-						} ${pinned.length === 0 && 'opacity-0'}`}>
+						} ${pinned?.length === 0 && 'opacity-0'}`}>
 						Clear
 					</button>
 				</div>
