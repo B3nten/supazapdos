@@ -29,6 +29,7 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 				body: JSON.stringify({ event, session }),
 			})
 		})
+
 		return () => {
 			if (unsubscribe.data) unsubscribe.data.unsubscribe()
 		}

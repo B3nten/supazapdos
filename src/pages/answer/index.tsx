@@ -8,11 +8,12 @@ import { useEffect, useState } from 'react'
 import supabase, { useSession } from '@src/modules/supabase'
 import { questions } from '@prisma/client'
 import { useRouter } from 'next/router'
+import { useClientRouter } from '@src/common/hooks/useClientRouter'
 
 export default function Answer() {
 	const client = useQueryClient()
 	const session = useSession()
-	console.log(session)
+	const router = useClientRouter()
 
 	const [animate] = useAutoAnimate<any>()
 
@@ -59,6 +60,17 @@ export default function Answer() {
 			questions.unsubscribe()
 		}
 	}, [session?.user?.id])
+
+	if (!session) {
+		return (
+			<div>
+				<div>You must be logged in to answer questions</div>
+				<button className='btn' onClick={() => router.push('/')}>
+					Go home
+				</button>
+			</div>
+		)
+	}
 
 	if (initialQuestions.isLoading) return <div>loading..</div>
 	if (initialQuestions.isError) return <div>{initialQuestions.error.message}</div>

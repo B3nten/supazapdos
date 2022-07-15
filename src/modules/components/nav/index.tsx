@@ -9,15 +9,14 @@ export function Nav() {
 	const upsertUser = trpc.useMutation('users.upsert')
 
 	async function signInWithTwitch() {
-		const { user, session, error } = await supabase.auth.signIn(
-			{
-				provider: 'twitch',
-			},
-			{ redirectTo: window.location.origin }
-		)
-		if (user) {
-			trpc.useMutation('users.upsert')
-		}
+		await supabase.auth
+			.signIn(
+				{
+					provider: 'twitch',
+				},
+				{ redirectTo: window.location.origin }
+			)
+			.then(() => upsertUser.mutate())
 	}
 	return (
 		<nav className='w-full max-w-7xl mx-auto p-2 flex justify-between'>
