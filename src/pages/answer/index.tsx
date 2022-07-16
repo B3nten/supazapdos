@@ -58,10 +58,6 @@ export default function Answer() {
 		}
 	}, [session?.user?.id])
 
-	if (!session) {
-		window.location.href = window.location.origin
-	}
-
 	if (initialQuestions.isLoading)
 		return (
 			<BallTriangle

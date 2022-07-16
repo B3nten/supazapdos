@@ -5,6 +5,7 @@ import supabase from '@src/modules/supabase'
 
 export function Nav() {
 	const session = useSession()
+	const router = useRouter()
 
 	async function signInWithTwitch() {
 		await supabase.auth.signIn(
@@ -26,7 +27,10 @@ export function Nav() {
 			{session && (
 				<button
 					className='btn btn-primary space-x-2 text-lg'
-					onClick={() => supabase.auth.signOut()}>
+					onClick={() => {
+						supabase.auth.signOut()
+						router.push('/')
+					}}>
 					Sign out
 				</button>
 			)}
