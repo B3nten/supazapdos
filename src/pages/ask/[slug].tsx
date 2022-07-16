@@ -1,10 +1,10 @@
+import { useClientRouter } from '@src/common/hooks/useClientRouter'
 import { trpc } from '@src/utils/trpc'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { BallTriangle } from 'react-loader-spinner'
 
 export default function Ask() {
-	const router = useRouter()
+	const router = useClientRouter()
 	const user = trpc.useQuery(['users.get-user', { user_slug: router.query.slug as string }])
 	const [question, setQuestion] = useState('')
 	const submitQuestion = trpc.useMutation('question.ask-question')
@@ -44,6 +44,7 @@ export default function Ask() {
 					}}>
 					Submit
 				</button>
+				{submitQuestion.isError && <div>Thats too short 😠😠😠</div>}
 			</div>
 		</>
 	)

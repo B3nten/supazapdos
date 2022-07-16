@@ -7,14 +7,11 @@ import { useQueryClient } from 'react-query'
 import { useEffect, useState } from 'react'
 import supabase, { useSession } from '@src/modules/supabase'
 import { questions } from '@prisma/client'
-import { useRouter } from 'next/router'
-import { useClientRouter } from '@src/common/hooks/useClientRouter'
 import { BallTriangle } from 'react-loader-spinner'
 
 export default function Answer() {
 	const client = useQueryClient()
 	const session = useSession()
-	const router = useClientRouter()
 
 	const [animate] = useAutoAnimate<any>()
 
@@ -55,7 +52,6 @@ export default function Answer() {
 				setQuestions(old => [...old, payload.new])
 			})
 			.subscribe()
-		console.log(questions)
 
 		return () => {
 			questions.unsubscribe()
@@ -63,7 +59,7 @@ export default function Answer() {
 	}, [session?.user?.id])
 
 	if (!session) {
-		return null
+		window.location.href = window.location.origin
 	}
 
 	if (initialQuestions.isLoading)
@@ -74,7 +70,6 @@ export default function Answer() {
 			/>
 		)
 	if (initialQuestions.isError) return <div>{initialQuestions.error.message}</div>
-	if (!initialQuestions.data || !questions) return <div>no questions</div>
 
 	async function copyEmbed() {
 		const url = window.location.hostname + '/embed/' + session?.user?.id
@@ -109,6 +104,7 @@ export default function Answer() {
 						Clear
 					</button>
 				</div>
+				{questions.length === 0 && <div>no questions yet...</div>}
 				{questions
 					.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 					.map(q => (

@@ -13,6 +13,7 @@ const supabaseContext = createContext<Session | null>(null)
 
 export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 	const [session, setSession] = useState<Session | null>(null)
+	// const addMods = trpc.useMutation('users.add-mods')
 
 	useEffect(() => {
 		setSession(supabase.auth.session())
@@ -24,6 +25,9 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 				credentials: 'same-origin',
 				body: JSON.stringify({ event, session }),
 			})
+			if (event === 'SIGNED_IN') {
+				// addMods.mutate()
+			}
 		})
 
 		return () => {

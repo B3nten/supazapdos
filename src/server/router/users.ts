@@ -36,3 +36,14 @@ export const userRouter = createRouter()
 			return user
 		},
 	})
+// .mutation('add-mods', {
+// 	async resolve({ ctx }) {
+// 		const res = await fetch(
+// 			'https://api.twitch.tv/helix/moderation/moderators/?broadcaster_id=' +
+// 				ctx.session.user?.user_metadata.provider_id, {
+
+// 				}
+// 		)
+// 		console.log(ctx.session)
+// 	},
+// })

@@ -8,24 +8,19 @@ export default function ID() {
 	const router = useClientRouter()
 	const [pinned, setPinned] = useState<pins>()
 
-	const something = trpc.useQuery(
-		['question.get-pinned-question', { id: router.query.id as string }],
-		{
-			onSuccess: (data: pins) => {
-				setPinned(data)
-			},
-		}
-	)
+	trpc.useQuery(['question.get-pinned-question', { id: router.query.id as string }], {
+		onSuccess: (data: pins) => {
+			setPinned(data)
+		},
+	})
 
 	useEffect(() => {
 		const questions = supabase
 			.from(`pins:user_id=eq.${router.query.id as string}`)
 			.on('*', payload => {
-				console.log(payload)
 				setPinned(payload.new)
 			})
 			.subscribe()
-		console.log(questions)
 
 		return () => {
 			questions.unsubscribe()
@@ -45,5 +40,7 @@ export default function ID() {
 }
 
 const css = `
-  :root {background-color: transparent;
-  }`
+  :root {
+		background-color: transparent;
+  }
+`
