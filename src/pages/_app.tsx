@@ -5,12 +5,18 @@ import type { AppType } from 'next/dist/shared/lib/utils'
 import superjson from 'superjson'
 import '../styles/globals.css'
 import { SupabaseProvider } from '@src/modules/supabase'
+import Head from 'next/head'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 	return (
-		<SupabaseProvider>
-			<Component {...pageProps} />
-		</SupabaseProvider>
+		<>
+			<Head>
+				<title>Supazapdos!</title>
+			</Head>
+			<SupabaseProvider>
+				<Component {...pageProps} />
+			</SupabaseProvider>
+		</>
 	)
 }
 
