@@ -9,6 +9,7 @@ import supabase, { useSession } from '@src/modules/supabase'
 import { questions } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useClientRouter } from '@src/common/hooks/useClientRouter'
+import { BallTriangle } from 'react-loader-spinner'
 
 export default function Answer() {
 	const client = useQueryClient()
@@ -62,17 +63,16 @@ export default function Answer() {
 	}, [session?.user?.id])
 
 	if (!session) {
-		return (
-			<div>
-				<div>You must be logged in to answer questions</div>
-				<button className='btn' onClick={() => router.push('/')}>
-					Go home
-				</button>
-			</div>
-		)
+		return null
 	}
 
-	if (initialQuestions.isLoading) return <div>loading..</div>
+	if (initialQuestions.isLoading)
+		return (
+			<BallTriangle
+				wrapperClass='w-full h-screen flex justify-center items-center'
+				color='#FF7AC6'
+			/>
+		)
 	if (initialQuestions.isError) return <div>{initialQuestions.error.message}</div>
 	if (!initialQuestions.data || !questions) return <div>no questions</div>
 

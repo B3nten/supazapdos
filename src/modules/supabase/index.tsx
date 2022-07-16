@@ -13,15 +13,11 @@ const supabaseContext = createContext<Session | null>(null)
 
 export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 	const [session, setSession] = useState<Session | null>(null)
-	const upsertUser = trpc.useMutation('users.upsert')
 
 	useEffect(() => {
 		setSession(supabase.auth.session())
 		const unsubscribe = supabase.auth.onAuthStateChange(async (event, session) => {
 			setSession(session)
-			if (event == 'SIGNED_IN') {
-				upsertUser.mutate()
-			}
 			await fetch('/api/auth/cookie', {
 				method: 'POST',
 				headers: new Headers({ 'Content-Type': 'application/json' }),

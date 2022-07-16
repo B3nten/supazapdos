@@ -2,13 +2,20 @@ import { Nav } from '@src/modules/components/nav'
 import { trpc } from '@src/utils/trpc'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { BallTriangle } from 'react-loader-spinner'
 
 export default function Ask() {
 	const router = useRouter()
 	const user = trpc.useQuery(['users.get-user', { user_slug: router.query.slug as string }])
 	const [question, setQuestion] = useState('')
 	const submitQuestion = trpc.useMutation('question.ask-question')
-	if (user.isLoading) return <div>Loading...</div>
+	if (user.isLoading)
+		return (
+			<BallTriangle
+				wrapperClass='w-full h-screen flex justify-center items-center'
+				color='#FF7AC6'
+			/>
+		)
 	if (!user.data || !user.data.id) return <div>User not found</div>
 	return (
 		<>
