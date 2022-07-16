@@ -2,11 +2,9 @@ import { useRouter } from 'next/router'
 import { useSession } from '@src/modules/supabase'
 import { ImTwitch } from 'react-icons/im'
 import supabase from '@src/modules/supabase'
-import { trpc } from '@src/utils/trpc'
 
 export function Nav() {
 	const session = useSession()
-	const upsertUser = trpc.useMutation('users.upsert')
 
 	async function signInWithTwitch() {
 		await supabase.auth.signIn(
